@@ -1,3 +1,5 @@
+Developed by Team HAI: Qing Guo, Jarvis Tse, Parjanya Vyas, Yuzhe You.
+
 #Development setup
 
 install NodeJS: https://nodejs.org
