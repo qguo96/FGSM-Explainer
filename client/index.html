@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik+Moonrocks&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Finlandica&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>FGSM Explainer</title>
+  <link rel="shortcut icon" href="#">
+</head>
+<body style="background-color: #867499;">
+  <img id="panda" src='./assets/media/panda.png'></img>
+  <h1 id="title">
+        <text id="subtitle"> Learn Adversarial Attacks in your browser! </text>
+    <div>FGSM Explainer</div>
+  </h1>
+  <svg class="leftpanel"></svg>
+  <div id="info">
+    <p class="desc" style="color: white;">
+      <hl>FGSM Explainer</hl> is an interactive web-based visualization tool
+      that aims to demonstrate how the FGSM method, a gradient-based white-box attack,
+      applies imperceptible perturbations to images to fool machine learning models.
+    </p>
+    <p class="desc" style="color: white;">
+      Brought to you by <hl>Team HAI</hl>: Qing Guo, Jarvis Tse, Parjanya Vyas &amp; Yuzhe You
+    </p>
+  </div>
+  <form id="sliderData">
+  <input id="slider1" type="range" min="0" max="3" value="0">
+  <p style="color:white;text-align:center;font-family: 'Finlandica', sans-serif;">Perturbation Size: <span style="color:#ffa500;">None</span></p>
+  </form>
+  <svg class="bg_pattern">
+    <text x="100" y="166" style="font-size:10px" class="desc">Original Image</text>
+    <text x="105" y="330" style="font-size:10px" class="desc">Noise &times;</text>
+    <text x="140" y="330" id="epsilon" style="font-size:10px" class="desc">???</text>
+    <text x="345" y="250" style="font-size:10px" class="desc">Adversarial Image</text>
+    <text x="810" y="325" class="desc">Instance-Level Attack Explainer</text>
+    <text x="300" y="280" style="font-size:12px;" class="desc">
+        * The FGSM Attack applies a small perturbation (noise) in the direction of the gradients
+    </text>
+    <text x="300" y="295" style="font-size:12px;" class="desc">
+        of the neural network to the original image to create an adversarial example. The goal is
+    </text>
+    <text x="300" y="310" style="font-size:12px;" class="desc">
+        to take advantage of the gradients of the loss with respect to the input image to
+    </text>
+    <text x="300" y="325" style="font-size:12px;" class="desc">
+        maximize the loss.
+    </text>
+    <text x="430" y="20" style="font-size:12px;" class="desc">
+        * The data projects consist of the image dataset CIFAR-10 being projected as circles on a 2-D plane. We apply
+    </text>
+    <text x="430" y="35" style="font-size:12px;" class="desc">
+        dimensionality reduction method t-SNE on the extracted features of each data instance. Each circle represents
+    </text>
+    <text x="430" y="50" style="font-size:12px;" class="desc">
+        an instance from the dataset.
+    </text>
+
+  </svg>
+  <!-- scatterplot -->
+  <div>
+    <svg class="canvas1"></svg>
+    <svg class="canvas2"></svg>
+    <svg class="canvas">
+      <text x="5" y="495" class="desc">Data Projector #1</text>
+      <text x="505" y="495" class="desc">Data Projector #2</text>
+    </svg>
+    <div class="model1">VGG16</div>
+    <div class="model2">VGG19</div>
+    <button id="reset1"> RESET </button>
+    <button id="reset2"> RESET </button>
+    <button id="help1"> ? </button>
+    <button id="help2"> ? </button>
+    <button id="zoom_in1">+</button>
+    <button id="zoom_out1">-</button>
+    <button id="zoom_in2">+</button>
+    <button id="zoom_out2">-</button>
+    <!-- displaying the label charts -->
+    <svg class="labels1">
+      <g>
+        <circle cx="15" cy="12" r="7" stroke="#111010" stroke-width="0.1" style="fill: #f48382;"></circle>
+        <circle cx="15" cy="32" r="7" stroke="#111010" stroke-width="0.1" style="fill: #f8bd61;"></circle>
+        <circle cx="15" cy="52" r="7" stroke="#111010" stroke-width="0.1" style="fill: #ece137;"></circle>
+        <circle cx="15" cy="72" r="7" stroke="#111010" stroke-width="0.1" style="fill: #c3c580;"></circle>
+        <circle cx="15" cy="92" r="7" stroke="#111010" stroke-width="0.1" style="fill: #82a69a;"></circle>
+        <circle cx="15" cy="112" r="7" stroke="#111010" stroke-width="0.1" style="fill: #80b2c5;"></circle>
+        <circle cx="15" cy="132" r="7" stroke="#111010" stroke-width="0.1" style="fill: #8088c5;"></circle>
+        <circle cx="15" cy="152" r="7" stroke="#111010" stroke-width="0.1" style="fill: #a380c5;"></circle>
+        <circle cx="15" cy="172" r="7" stroke="#111010" stroke-width="0.1" style="fill: #c77bab;"></circle>
+        <circle cx="15" cy="192" r="7" stroke="#111010" stroke-width="0.1" style="fill: #9a9494;"></circle>
+        <text x="25" y="15" style="font-size:10px;" class="desc">Airplane</text>
+        <text x="25" y="35" style="font-size:10px;" class="desc">Automobile</text>
+        <text x="25" y="55" style="font-size:10px;" class="desc">Bird</text>
+        <text x="25" y="75" style="font-size:10px;" class="desc">Cat</text>
+        <text x="25" y="95" style="font-size:10px;" class="desc">Deer</text>
+        <text x="25" y="115" style="font-size:10px;" class="desc">Dog</text>
+        <text x="25" y="135" style="font-size:10px;" class="desc">Frog</text>
+        <text x="25" y="155" style="font-size:10px;" class="desc">Horse</text>
+        <text x="25" y="175" style="font-size:10px;" class="desc">Ship</text>
+        <text x="25" y="195" style="font-size:10px;" class="desc">Truck</text>
+      </g>
+    </svg>
+    <svg class="labels2">
+      <g>
+        <circle cx="15" cy="12" r="7" stroke="#111010" stroke-width="0.1" style="fill: #f48382;"></circle>
+        <circle cx="15" cy="32" r="7" stroke="#111010" stroke-width="0.1" style="fill: #f8bd61;"></circle>
+        <circle cx="15" cy="52" r="7" stroke="#111010" stroke-width="0.1" style="fill: #ece137;"></circle>
+        <circle cx="15" cy="72" r="7" stroke="#111010" stroke-width="0.1" style="fill: #c3c580;"></circle>
+        <circle cx="15" cy="92" r="7" stroke="#111010" stroke-width="0.1" style="fill: #82a69a;"></circle>
+        <circle cx="15" cy="112" r="7" stroke="#111010" stroke-width="0.1" style="fill: #80b2c5;"></circle>
+        <circle cx="15" cy="132" r="7" stroke="#111010" stroke-width="0.1" style="fill: #8088c5;"></circle>
+        <circle cx="15" cy="152" r="7" stroke="#111010" stroke-width="0.1" style="fill: #a380c5;"></circle>
+        <circle cx="15" cy="172" r="7" stroke="#111010" stroke-width="0.1" style="fill: #c77bab;"></circle>
+        <circle cx="15" cy="192" r="7" stroke="#111010" stroke-width="0.1" style="fill: #9a9494;"></circle>
+        <text x="25" y="15" style="font-size:10px;" class="desc">Airplane</text>
+        <text x="25" y="35" style="font-size:10px;" class="desc">Automobile</text>
+        <text x="25" y="55" style="font-size:10px;" class="desc">Bird</text>
+        <text x="25" y="75" style="font-size:10px;" class="desc">Cat</text>
+        <text x="25" y="95" style="font-size:10px;" class="desc">Deer</text>
+        <text x="25" y="115" style="font-size:10px;" class="desc">Dog</text>
+        <text x="25" y="135" style="font-size:10px;" class="desc">Frog</text>
+        <text x="25" y="155" style="font-size:10px;" class="desc">Horse</text>
+        <text x="25" y="175" style="font-size:10px;" class="desc">Ship</text>
+        <text x="25" y="195" style="font-size:10px;" class="desc">Truck</text>
+      </g>
+    </svg>
+  </div>
+  <!-- two accuracy bar charts -->
+  <div id="robustAnalyzerVGG16">
+    <canvas></canvas>
+  </div>
+  <div id="robustAnalyzerVGG19">
+    <canvas></canvas>
+  </div>
+  <div>
+  <button id="trans1"> ATTACK! </button>
+  </div>
+  <!-- instance level attack explainer -->
+  <div>
+  <svg class="dashed_line" width="1020" height="340" viewBox="0 0 1020 340">
+    <path
+      class="path"
+      d="M 150 90 L 250 90 L 250 155 L 310 155"
+      stroke="#777777"
+      fill="none"
+      stroke-width="5">
+  </svg>
+  <svg class="dashed_line" width="1020" height="340" viewBox="0 0 1020 340">
+    <path
+      class="path"
+      d="M 150 250 L 250 250 L 250 185 L 310 185 L 450 167 L 800 167"
+      stroke="#777777"
+      fill="none"
+      stroke-width="5">
+  </svg>
+  </div>
+  <div>
+    <p id="rcorners1"></p>
+    <img class="image" id="image1" src="./assets/media/panda_.png"></img>
+    <p id="rcorners2"></p>
+    <img class="image" id="image2" src="./assets/media/question_.png"></img>
+    <p id="rcorners3"></p>
+    <img class="image" id="image3" src="./assets/media/panda_noise.png"></img>
+    <img class="image" id="image1_" src="./assets/media/panda_.png"></img>
+    <img class="image" id="image2_" src="./assets/media/question_.png"></img>
+  </div>
+  <div class="model3">MODEL</div>
+  <svg class="instance_pred2">
+      <text id="instance_pred1_text" x="67" y="63" style="font-size:20px" font-family="Courier" text-anchor="middle">???</text>
+  </svg>
+  <svg class="instance_pred1">
+      <text id="instance_pred2_text" x="67" y="63" style="font-size:20px" font-family="Courier" text-anchor="middle">???</text>
+  </svg>
+  <svg class="instance_pred">
+    <p id="desc_label" class="desc" style="color: white;">Ground Truth Label</p>
+    <p id="desc_pred" class="desc" style="color: white;">Current Prediction</p>
+  </svg>
+  <!-- confidence level barcharts -->
+  <div id="confidence_level_barchart">
+      <svg width="100%" height="850.5px">
+          <g transform="translate(62,100)">
+              <text transform="translate(180,-70)" style="fill:#553D6D; text-anchor: middle; font-weight: bold;">CONFIDENCE LEVELS</text>
+              <text transform="translate(180,340)" id="confidenceLevelMessage" style="fill:#402C54; text-anchor: middle; font-size: 15px; visibility: visible;"></text>
+              <g class="modelLegend" transform="translate(0,-30)" style="visibility: visible;">
+                  <text id="confid_text1" x="-50" y="-12" dy=".35em" style="font-size: 14px; text-anchor: start;">Model: [Unknown]</text>
+                  <text id="confid_text2" x="-50" y="4" dy=".35em" style="font-size: 14px; text-anchor: start;">Perturbation Level: [Unknown]</text>
+              </g>
+          </g>
+      </svg>
+  </div>
+  <svg class="rightpanel"></svg>
+  <div id="page">
+    <h2>What is an Adversarial Attack?</h2>
+    <p class="page_p">
+      In 2014, Goodfellow et al. showed that an adversarial image of a panda could fool a Machine Learning
+      model into outputting "Gibbon," leading to the birth of the research in Adversarial Machine Learning.
+      An adversarial attack produces adversarial examples that are crafted with small, indistinguishable perturbations
+      with the goal to result in model prediction errors, e.g. image misclassifications.
+    </p>
+    <img style="width: 800px;border-radius: 10px;" src="./assets/media/illustration1.png"></img>
+    <p class="page_p">
+      There are several types of known adversarial attacks, two of which are white-box and black-box attacks.
+      A white-box attack assumes that the attacker has full knowledge and access to the internal logic of the model
+      (architecture, gradient information, etc.), while a black-box attack assumes that the attacker only has
+      access to the inputs and outputs of the model. Alternatively, the attacks can also be divided into targeted attacks and non-targeted attack.
+      A non-targeted attacks indicates that the goal of the adversary is to produce a wrong output but does not
+      care what the new prediction is, while in the case of a targeted attack the input data is specifically altered to
+      produce the prediction of a target class.
+    </p>
+    <h2>What is the FGSM method? </h2>
+    <p class="page_p">
+      The Fast Gradient Sign Method (FGSM) attack is one of the first and most well-known adversarial attacks to date. The FGSM attack is a gradient-based white-box attack that is simple
+      in logic but has proven to be highly effective. The attack adjusts the input image by taking a step toward the sign of the
+      back-propagated gradients. The idea is that rather than working to minimize the loss by adjusting the weights based on the
+      gradients, the FGSM attack adjusts the input data to maximize the loss.
+    </p>
+    <p class="page_p">
+      For our web application, we choose to visualize the FGSM attack (with l_infinity norm) due to it being the most well-known adversarial attack and
+       its straightforward attack methodology.
+    </p>
+    <h2> Which Dataset are We Using? </h2>
+    <p class="page_p">
+      For our visualization, we choose to use the CIFAR-10 dataset.
+      The CIFAR-10 dataset consists of 60,000 coloured images in 10 classes, with 6,000 images per class.
+      For visualizability, we randomly sample 10 images from each class (with a total of 100 images) for our visualization.
+    </p>
+    <img style="width: 600px;border-radius: 10px;" src="./assets/media/illustration2.png"></img>
+    <h2> What Models are We Using? </h2>
+    <p class="page_p">
+      Since FGSM is a gradient-based white-box attack, the set of adversarial examples generated
+      will differ depending on the specific model being attacked. To demonstrate the impacts of the
+      FGSM attack on different models, we have included visualizations of two specific models side by side.
+      For our design, we have decided to use readily available models that were pre-trained on the CIFAR-10 training dataset.
+      Specifically, we select VGG16_BN (VGG-16 with batch normalization) and VGG19_BN (VGG-19 with batch
+      normalization) for our demonstration.
+    </p>
+    <p class="page_p">
+      The VGG-Network architecture is a convolution neural network first proposed by Simonyan and Zisserman;
+      compared to previous derivatives of AlexNet, the VGG-Network investigates the effects of convolutional
+      network depth on its accuracy in a large-scale image recognition setting. The original study has
+      demonstrated that using networks of increasing depth and an architecture with very small (3x3) convolution
+      filters results in a significant improvement over the prior-art configurations by pushing the depth to 16-19
+      weight layers.
+    </p>
+    <h2> What is the Data Projector? </h2>
+    <p class="page_p">
+      The data projector consists of the image dataset CIFAR-10 being projected as
+      circles on a 2-D plane. Each circle represents an instance from the
+      dataset. For our visualization, we apply the dimensionality reduction method
+      t-SNE on the extracted features (representations) of each input image by the VGG
+      models.
+    </p>
+    <p class="page_p">
+      The inner colour of each circle represents its ground truth label, and the outer colour (if exists any)
+      represents the class of the instance the model predicts it as. Hovering each circle will provide you with some
+      quick information regarding the instance number, its ground truth label, and the model's current prediction class.
+    </p>
+    <h2> What is the Instance-Level Attack Explainer? </h2>
+    <p class="page_p">
+      The Instance-Level Attack Explainer provides more in-depth information regarding each instance in the dataset.
+      Clicking on each circle in the data projector will update the Instance-Level Attack
+      Explainer accordingly to display the original image, the perturbed image, and the noise visualized as
+      an image. An animation sequence is also played on loop to demonstrate the general flow of the
+      attack methodology.
+    </p>
+    <p class="page_p">
+      Additionally, we provide an interactive confidence level bar chart that displays the model's
+      confidence scores across all ten classes before and after the attack. Hovering each pair of bars
+      will highlight the difference in percentage before and after the attack.
+    </p>
+    <h2> What is the Perturbation Slider? </h2>
+    <p class="page_p">
+      You may adjust the slider horizontally to choose the perturbation of interest. After a perturbation size has been selected, you may
+      click on the attack button below the perturbation slider to initiate the corresponding animated sequence that simulates the attack.
+    </p>
+    <p class="page_p">
+      The bar charts (robustness analyzer) above the perturbation slider visualize the prediction accuracy of
+      the VGG models before and after an adversarial attack.
+      The natural accuracy stands for the model's prediction accuracy on
+      the unperturbed CIFAR-10 dataset. The robust accuracy stands
+      for the model’s performance on the corresponding adversarial dataset.
+    </p>
+    <h2> References </h2>
+    <p class="page_p">
+      <a href="https://www.cs.toronto.edu/~kriz/cifar.html" target="_blank">The CIFAR-10 Dataset</a><br>
+      <a href="https://pytorch.org/tutorials/beginner/fgsm_tutorial.html" target="_blank">Pytorch Adversarial Example Generation</a><br>
+      <a href="https://arxiv.org/abs/1412.6572" target="_blank">Explaining and Harnessing Adversarial Examples (Goodfellow et al.)</a><br>
+      <a href="https://arxiv.org/abs/1409.1556" target="_blank">Very Deep Convolutional Networks for Large-Scale Image Recognition (Simonyan et Zisserman)</a><br>
+    </p>
+    <ul class="circles__">
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+    </ul>
+  </div>
+
+  <div class="welcome_append">
+    <div class="welcome_bg"></div>
+    <div id="welcome_window">
+      <p id="welcome_text">Welcome to <hl>FGSM Explainer</hl>!</p>
+      <p id="welcome_text2">An interactive adversarial attack visualization tool brought to you by <hl>Team HAI</hl></p>
+      <button class="welcome_enter">ENTER</button>
+      <img class="welcome_icon" id="icon_panda" src="./assets/media/panda.png"></img>
+      <img class="welcome_icon" id="icon_gibbon" src="./assets/media/gibbon.png"></img>
+    </div>
+  </div>
+  <div id="overlay" style="display:none">
+    <div class="full_image">
+      <p id="rcorners_enlarge1"></p>
+      <img id="enlarged_image1" />
+      <p id="rcorners_enlarge2"></p>
+      <img id="enlarged_image2" />
+      <button id="compare"> COMPARE </button>
+      <button id="compare_disabled"> COMPARE </button>
+      <button id="cancel_overlay"> RETURN </button>
+      <text id="enlarge_text1">ORIGINAL IMAGE</text>
+      <text id="enlarge_text1p">Prediction:</text>
+      <text id="enlarge_text2">ADVERSARIAL IMAGE</text>
+      <text id="enlarge_text2p">Prediction:</text>
+    </div>
+  </div>
+</body>
+</html>
